@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class RcsSounds : ModuleRCS
+class RcsSounds : PartModule
 {
     [KSPField]
     public string rcsSoundFile = "RcsSounds/Sounds/RcsHeavy";
@@ -22,10 +22,19 @@ class RcsSounds : ModuleRCS
     private List<GameObject> RcsLights = new List<GameObject>();
     private bool Paused = false;
 
+    private ModuleRCS _rcsModule = null;
+    private ModuleRCS rcsModule
+    {
+        get
+        {
+            if (this._rcsModule == null)
+                this._rcsModule = (ModuleRCS)this.part.Modules["ModuleRCS"];
+            return this._rcsModule;
+        }
+    }
+
     public override void OnStart(PartModule.StartState state)
     {
-        base.OnStart(state);
-
         try
         {
             if (state == StartState.Editor || state == StartState.None) return;
@@ -111,21 +120,21 @@ class RcsSounds : ModuleRCS
                 {
                     // Check for the resource as the effects still fire slightly without fuel.
                     var resourceList = new List<PartResource>();
-                    part.GetConnectedResources(PartResourceLibrary.Instance.GetDefinition("MonoPropellant").id, resourceList);
+                    part.GetConnectedResources(PartResourceLibrary.Instance.GetDefinition(rcsModule.resourceName).id, resourceList);
                     double totalAmount = 0;
                     foreach (PartResource r in resourceList)
                         totalAmount += r.amount;
 
                     if (totalAmount >= 0.01) // 0.01 is the smallest amount shown in the resource menu.
                     {
-                        for (int i = 0; i < thrusterFX.Count; i++)
+                        for (int i = 0; i < rcsModule.thrusterFX.Count; i++)
                         {
-                            rcsHighestPower = Mathf.Max(rcsHighestPower, thrusterFX[i].Power);
+                            rcsHighestPower = Mathf.Max(rcsHighestPower, rcsModule.thrusterFX[i].Power);
                             if (useLightingEffects)
                             {
-                                RcsLights[i].light.enabled = thrusterFX[i].Active;
-                                RcsLights[i].light.intensity = thrusterFX[i].Power;
-                                RcsLights[i].light.spotAngle = Mathf.Lerp(0, 45, thrusterFX[i].Power);
+                                RcsLights[i].light.enabled = rcsModule.thrusterFX[i].Active;
+                                RcsLights[i].light.intensity = rcsModule.thrusterFX[i].Power;
+                                RcsLights[i].light.spotAngle = Mathf.Lerp(0, 45, rcsModule.thrusterFX[i].Power);
                             }
                         }
                         if (rcsHighestPower > 0.1f)
@@ -167,13 +176,11 @@ class RcsSounds : ModuleRCS
         {
             Debug.LogError("RcsSounds Error OnUpdate: " + ex.Message);
         }
-
-        base.OnUpdate();
     }
 
     private void AddLights()
     {
-        foreach (Transform t in thrusterTransforms)
+        foreach (Transform t in rcsModule.thrusterTransforms)
         {
             GameObject rcsLight = new GameObject();
             rcsLight.AddComponent<Light>();
