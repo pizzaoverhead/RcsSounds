@@ -152,11 +152,12 @@ class RcsSounds : PartModule
                     if (!RcsSound.audio.isPlaying)
                         RcsSound.audio.Play();
                     previouslyActive = true;
-                    Debug.Log("RCS volume " + RcsSound.audio.volume);
                 }
                 else
                 {
-                    RcsSound.audio.Stop();
+					RcsSound.audio.Stop();
+					for (int i = 0; i < rcsModule.thrusterFX.Count; i++)
+						RcsLights[i].light.enabled = false;
                     if (previouslyActive)
                     {
                         if (!internalRcsSoundsOnly ||
@@ -165,7 +166,6 @@ class RcsSounds : PartModule
                         {
                             RcsShutoffSound.audio.volume = soundVolume / 2;
                             RcsShutoffSound.audio.Play();
-                            Debug.Log("RCS shutoff volume " + RcsShutoffSound.audio.volume);
                         }
                         previouslyActive = false;
                     }
