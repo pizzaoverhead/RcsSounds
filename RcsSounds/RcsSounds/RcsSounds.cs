@@ -66,9 +66,6 @@ class RcsSounds : PartModule
                 RcsShutoffSound.audio.Stop();
                 RcsShutoffSound.audio.clip = GameDatabase.Instance.GetAudioClip(rcsShutoffSoundFile);
                 RcsShutoffSound.audio.loop = false;
-                // Seek to a random position in the sound file so we don't have 
-                // harmonic effects when burning at multiple RCS nozzles.
-                RcsShutoffSound.audio.time = UnityEngine.Random.Range(0, RcsSound.audio.clip.length);
             }
             else
                 Debug.LogError("RcsSounds: Sound shuttof FXGroup not found.");
@@ -115,8 +112,7 @@ class RcsSounds : PartModule
                 bool rcsActive = false;
                 float rcsHighestPower = 0f;
 
-                if (!internalRcsSoundsOnly ||
-                    CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Flight || CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Map)
+                if (!internalRcsSoundsOnly || CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA)
                 {
                     // Check for the resource as the effects still fire slightly without fuel.
                     var resourceList = new List<PartResource>();
@@ -160,9 +156,8 @@ class RcsSounds : PartModule
 						RcsLights[i].light.enabled = false;
                     if (previouslyActive)
                     {
-                        if (!internalRcsSoundsOnly ||
-                            CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Flight ||
-                            CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Map)
+                        if (!internalRcsSoundsOnly || 
+							CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA)
                         {
                             RcsShutoffSound.audio.volume = soundVolume / 2;
                             RcsShutoffSound.audio.Play();
