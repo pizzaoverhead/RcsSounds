@@ -116,7 +116,7 @@ class RcsSounds : PartModule
                 {
                     // Check for the resource as the effects still fire slightly without fuel.
                     var resourceList = new List<PartResource>();
-                    part.GetConnectedResources(PartResourceLibrary.Instance.GetDefinition(rcsModule.resourceName).id, resourceList);
+                    part.GetConnectedResources(PartResourceLibrary.Instance.GetDefinition(rcsModule.resourceName).id, ResourceFlowMode.ALL_VESSEL, resourceList);
                     double totalAmount = 0;
                     foreach (PartResource r in resourceList)
                         totalAmount += r.amount;
