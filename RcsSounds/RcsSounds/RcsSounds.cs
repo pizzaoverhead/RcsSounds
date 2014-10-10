@@ -23,7 +23,7 @@ class RcsSounds : PartModule
     private bool Paused = false;
 
     private ModuleRCS _rcsModule = null;
-    private ModuleRCS rcsModule
+    public ModuleRCS rcsModule
     {
         get
         {
@@ -116,7 +116,18 @@ class RcsSounds : PartModule
                 {
                     // Check for the resource as the effects still fire slightly without fuel.
                     var resourceList = new List<PartResource>();
-                    part.GetConnectedResources(PartResourceLibrary.Instance.GetDefinition(rcsModule.resourceName).id, resourceList);
+                    ResourceFlowMode m;
+                    try
+                    {
+                        m = (ResourceFlowMode)Enum.Parse(typeof(ResourceFlowMode), rcsModule.resourceFlowMode);
+                    }
+                    catch (Exception)
+                    {
+                        m = ResourceFlowMode.ALL_VESSEL;
+                    }
+
+                    part.GetConnectedResources(PartResourceLibrary.Instance.GetDefinition(rcsModule.resourceName).id,
+                        m, resourceList);
                     double totalAmount = 0;
                     foreach (PartResource r in resourceList)
                         totalAmount += r.amount;

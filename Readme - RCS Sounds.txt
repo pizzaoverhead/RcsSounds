@@ -1,9 +1,9 @@
 -------------------------------------------------------------
  RCS Sounds
  Author:    pizzaoverhead
- Version:   3.1
- Released:  2014-1-19
- KSP:       v0.23
+ Version:   4.2
+ Released:  2014-10-10
+ KSP:       v0.25
 
  Thread:    http://forum.kerbalspaceprogram.com/threads/52896
  Licence:   GNU v2, http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@
 RCS Sounds adds sound and light effects when firing RCS thrusters. Check the forum thread for updates:
 http://forum.kerbalspaceprogram.com/threads/52896
 
-This plugin makes use of Sarbian's Module Manager to avoid needing part.cfg edits. Check here for new versions:
+This plugin makes use of ialdabaoth and Sarbian's Module Manager to avoid needing part.cfg edits. Check here for new versions:
 http://forum.kerbalspaceprogram.com/threads/55219
 
 
@@ -55,6 +55,23 @@ useLightingEffects = false
 
 Version history
 ---------------
+4.2 (2014-10-10)
+- 0.25 support.
+- Upgraded to Module Manager 2.5.1.
+
+4.1b (2014-09-25)
+- Added Module Manager licence.
+- Upgraded to Module Manager 2.3.5.
+
+4.1 (2014-07-29)
+- 0.24.x support.
+- Upgraded to Module Manager 2.2.0.
+
+4.0 (2014-04-04)
+- Fixed internalRcsSoundsOnly not working correctly.
+- Rebuilt for the ARM pack (KSP 0.23.5).
+- Updated to ModuleManager 2.0.1.
+
 3.2 (2014-03-09)
 - Fixed light effects not being disabled when the thruster runs out of fuel (thanks to BigNose for the bug report).
 - Removed old sound file.
