@@ -163,8 +163,11 @@ class RcsSounds : PartModule
                 else
                 {
 					RcsSound.audio.Stop();
-					for (int i = 0; i < rcsModule.thrusterFX.Count; i++)
-						RcsLights[i].light.enabled = false;
+                    if (useLightingEffects)
+                    {
+                        for (int i = 0; i < rcsModule.thrusterFX.Count; i++)
+                            RcsLights[i].light.enabled = false;
+                    }
                     if (previouslyActive)
                     {
                         if (!internalRcsSoundsOnly || 
