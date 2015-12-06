@@ -28,7 +28,6 @@ class RcsSounds : PartModule
         get
         {
             if (this._rcsModule == null)
-                //this._rcsModule = (ModuleRCS)this.part.Modules["ModuleRCS"];
                 this._rcsModule = this.part.FindModuleImplementing<ModuleRCS>();
             return this._rcsModule;
         }
@@ -194,8 +193,8 @@ class RcsSounds : PartModule
         {
             GameObject rcsLight = new GameObject();
             rcsLight.AddComponent<Light>();
-            rcsLight.light.color = Color.white;
 
+            rcsLight.light.color = Color.white;
             rcsLight.light.type = LightType.Spot;
             rcsLight.light.intensity = 1f;
             rcsLight.light.range = 2f;
