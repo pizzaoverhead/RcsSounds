@@ -19,7 +19,7 @@ class RcsSounds : PartModule
 
     public FXGroup RcsSound = null;
     public FXGroup RcsShutoffSound = null;
-    private List<GameObject> RcsLights = new List<GameObject>();
+    private List<Light> RcsLights = new List<Light>();
     private bool Paused = false;
 
     private ModuleRCS _rcsModule = null;
@@ -68,7 +68,7 @@ class RcsSounds : PartModule
                 RcsShutoffSound.audio.loop = false;
             }
             else
-                Debug.LogError("RcsSounds: Sound shuttof FXGroup not found.");
+                Debug.LogError("RcsSounds: Sound shutoff FXGroup not found.");
 
             if (useLightingEffects)
                 AddLights();
@@ -139,9 +139,9 @@ class RcsSounds : PartModule
                             rcsHighestPower = Mathf.Max(rcsHighestPower, rcsModule.thrusterFX[i].Power);
                             if (useLightingEffects)
                             {
-                                RcsLights[i].light.enabled = rcsModule.thrusterFX[i].Active;
-                                RcsLights[i].light.intensity = rcsModule.thrusterFX[i].Power;
-                                RcsLights[i].light.spotAngle = Mathf.Lerp(0, 45, rcsModule.thrusterFX[i].Power);
+                                RcsLights[i].enabled = rcsModule.thrusterFX[i].Active;
+                                RcsLights[i].intensity = rcsModule.thrusterFX[i].Power;
+                                RcsLights[i].spotAngle = Mathf.Lerp(0, 45, rcsModule.thrusterFX[i].Power);
                             }
                         }
                         if (rcsHighestPower > 0.1f)
@@ -162,16 +162,16 @@ class RcsSounds : PartModule
                 }
                 else
                 {
-					RcsSound.audio.Stop();
+                    RcsSound.audio.Stop();
                     if (useLightingEffects)
                     {
                         for (int i = 0; i < rcsModule.thrusterFX.Count; i++)
-                            RcsLights[i].light.enabled = false;
+                            RcsLights[i].enabled = false;
                     }
                     if (previouslyActive)
                     {
-                        if (!internalRcsSoundsOnly || 
-							CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA)
+                        if (!internalRcsSoundsOnly ||
+                            CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA)
                         {
                             RcsShutoffSound.audio.volume = soundVolume / 2;
                             RcsShutoffSound.audio.Play();
@@ -191,21 +191,22 @@ class RcsSounds : PartModule
     {
         foreach (Transform t in rcsModule.thrusterTransforms)
         {
+            // Only one Light is allowed per GameObject, so create a new GameObject each time.
             GameObject rcsLight = new GameObject();
-            rcsLight.AddComponent<Light>();
+            Light light = rcsLight.AddComponent<Light>();
 
-            rcsLight.light.color = Color.white;
-            rcsLight.light.type = LightType.Spot;
-            rcsLight.light.intensity = 1f;
-            rcsLight.light.range = 2f;
-            rcsLight.light.spotAngle = 45f;
+            light.color = Color.white;
+            light.type = LightType.Spot;
+            light.intensity = 1f;
+            light.range = 2f;
+            light.spotAngle = 45f;
 
-            rcsLight.light.transform.parent = t;
-            rcsLight.light.transform.position = t.transform.position;
-            rcsLight.light.transform.forward = t.transform.up;
-            rcsLight.light.enabled = false;
+            light.transform.parent = t;
+            light.transform.position = t.transform.position;
+            light.transform.forward = t.transform.up;
+            light.enabled = false;
             rcsLight.AddComponent<MeshRenderer>();
-            RcsLights.Add(rcsLight);
+            RcsLights.Add(light);
         }
     }
 }

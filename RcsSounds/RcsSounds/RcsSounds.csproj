@@ -36,6 +36,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Squad binaries\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Squad binaries\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-UnityScript">
+      <HintPath>..\..\..\Squad binaries\Assembly-UnityScript.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-UnityScript-firstpass">
+      <HintPath>..\..\..\Squad binaries\Assembly-UnityScript-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="KSPAssets">
+      <HintPath>..\..\..\Squad binaries\KSPAssets.dll</HintPath>
+    </Reference>
+    <Reference Include="KSPCore">
+      <HintPath>..\..\..\Squad binaries\KSPCore.dll</HintPath>
+    </Reference>
+    <Reference Include="KSPUtil">
+      <HintPath>..\..\..\Squad binaries\KSPUtil.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +65,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Squad binaries\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\Squad binaries\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Vectrosity">
+      <HintPath>..\..\..\Squad binaries\Vectrosity.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,7 +78,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(TargetPath)" "C:\Games\Kerbal Space Program\GameData\$(ProjectName)\Plugins\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(TargetPath)" "C:\Games\Kerbal Space Program\GameData\$(ProjectName)\Plugins\"
+xcopy /y "$(TargetDir)$(TargetName).pdb" "C:\Games\Kerbal Space Program\GameData\$(ProjectName)\Plugins\"
+call "C:\Games\Kerbal Space Program\GameData\$(ProjectName)\Plugins\GenerateMonoDebug.bat"  C:\Games\Kerbal~1\GameData\$(ProjectName)\Plugins\
+taskkill /IM tail.exe /F 2&gt;&amp;1 | exit /B 0</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
